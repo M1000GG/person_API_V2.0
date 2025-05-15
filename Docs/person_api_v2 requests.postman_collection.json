@@ -1,0 +1,620 @@
+{
+	"info": {
+		"_postman_id": "542f10d4-e0e1-4b3f-a83f-724754acc806",
+		"name": "person_api_v2 requests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42216559"
+	},
+	"item": [
+		{
+			"name": "Typedocs",
+			"item": [
+				{
+					"name": "Get Typedocs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/typedocs",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"typedocs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Typedocs by code",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/typedocs/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"typedocs",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Typedoc",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"code\": 8,\r\n  \"description\": \"PruebaDoc\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/typedocs",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"typedocs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Typedoc",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"code\": 8,\r\n  \"description\": \"PruebaActulizar\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/typedocs/8",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"typedocs",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Typedoc",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"code\": 8,\r\n  \"description\": \"PruebaActulizar\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/typedocs/8",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"typedocs",
+								"8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Locations",
+			"item": [
+				{
+					"name": "Get States",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/locations/states",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"locations",
+								"states"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get States by code",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/locations/by-state/17",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"locations",
+								"by-state",
+								"17"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Location by code",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/locations/by-code/17001",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"locations",
+								"by-code",
+								"17001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Capitals",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/locations/by-code/17001",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"locations",
+								"by-code",
+								"17001"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Persons",
+			"item": [
+				{
+					"name": "Create Persons",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "parent_id",
+								"value": "p1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"h4\",\r\n  \"name\": \"Jorge\",\r\n  \"lastname\": \"Gutiérrez\",\r\n  \"age\": 22,\r\n  \"gender\": \"F\",\r\n  \"typedoc\": {\r\n    \"code\": 1,\r\n    \"description\": \"Cédula de Ciudadanía\"\r\n  },\r\n  \"location\": {\r\n    \"code\": 17001,\r\n    \"description\": \"MANIZALES\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/persons/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"persons",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Persons",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "parent_id",
+								"value": "p1",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"h4\",\r\n  \"name\": \"Jorge\",\r\n  \"lastname\": \"Gutiérrez\",\r\n  \"age\": 22,\r\n  \"gender\": \"F\",\r\n  \"typedoc\": {\r\n    \"code\": 1,\r\n    \"description\": \"Cédula de Ciudadanía\"\r\n  },\r\n  \"location\": {\r\n    \"code\": 17001,\r\n    \"description\": \"MANIZALES\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/persons/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"persons",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Persons by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "parent_id",
+								"value": "p1",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"h4\",\r\n  \"name\": \"Jorge\",\r\n  \"lastname\": \"Gutiérrez\",\r\n  \"age\": 22,\r\n  \"gender\": \"F\",\r\n  \"typedoc\": {\r\n    \"code\": 1,\r\n    \"description\": \"Cédula de Ciudadanía\"\r\n  },\r\n  \"location\": {\r\n    \"code\": 17001,\r\n    \"description\": \"MANIZALES\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/persons/h3",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"persons",
+								"h3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Person by id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "parent_id",
+								"value": "p1",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"h3\",\r\n    \"name\": \"Marleny\",\r\n    \"lastname\": \"Delgado\",\r\n    \"age\": 22,\r\n    \"gender\": \"F\",\r\n    \"typedoc\": {\r\n        \"code\": 1,\r\n        \"description\": \"Cédula de Ciudadanía\"\r\n    },\r\n    \"location\": {\r\n        \"code\": 17001,\r\n        \"description\": \"MANIZALES\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/persons/h3",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"persons",
+								"h3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Person by id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "parent_id",
+								"value": "p1",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"h3\",\r\n    \"name\": \"Marleny\",\r\n    \"lastname\": \"Delgado\",\r\n    \"age\": 22,\r\n    \"gender\": \"F\",\r\n    \"typedoc\": {\r\n        \"code\": 1,\r\n        \"description\": \"Cédula de Ciudadanía\"\r\n    },\r\n    \"location\": {\r\n        \"code\": 17001,\r\n        \"description\": \"MANIZALES\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/persons/h3",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"persons",
+								"h3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Persons with adult children",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "parent_id",
+								"value": "p1",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"h3\",\r\n    \"name\": \"Marleny\",\r\n    \"lastname\": \"Delgado\",\r\n    \"age\": 22,\r\n    \"gender\": \"F\",\r\n    \"typedoc\": {\r\n        \"code\": 1,\r\n        \"description\": \"Cédula de Ciudadanía\"\r\n    },\r\n    \"location\": {\r\n        \"code\": 17001,\r\n        \"description\": \"MANIZALES\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/persons/filter/with-adult-children",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"persons",
+								"filter",
+								"with-adult-children"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Persons by Criteria",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "parent_id",
+								"value": "p1",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"h3\",\r\n    \"name\": \"Marleny\",\r\n    \"lastname\": \"Delgado\",\r\n    \"age\": 22,\r\n    \"gender\": \"F\",\r\n    \"typedoc\": {\r\n        \"code\": 1,\r\n        \"description\": \"Cédula de Ciudadanía\"\r\n    },\r\n    \"location\": {\r\n        \"code\": 17001,\r\n        \"description\": \"MANIZALES\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/persons/filter/by-criteria?location_code=17001&typedoc_code=1&gender=F",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"persons",
+								"filter",
+								"by-criteria"
+							],
+							"query": [
+								{
+									"key": "location_code",
+									"value": "17001"
+								},
+								{
+									"key": "typedoc_code",
+									"value": "1"
+								},
+								{
+									"key": "gender",
+									"value": "F"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Parent by children",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "parent_id",
+								"value": "p1",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"h3\",\r\n    \"name\": \"Marleny\",\r\n    \"lastname\": \"Delgado\",\r\n    \"age\": 22,\r\n    \"gender\": \"F\",\r\n    \"typedoc\": {\r\n        \"code\": 1,\r\n        \"description\": \"Cédula de Ciudadanía\"\r\n    },\r\n    \"location\": {\r\n        \"code\": 17001,\r\n        \"description\": \"MANIZALES\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/persons/h2/parent",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"persons",
+								"h2",
+								"parent"
+							],
+							"query": [
+								{
+									"key": "location_code",
+									"value": "17001",
+									"disabled": true
+								},
+								{
+									"key": "typedoc_code",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "gender",
+									"value": "F",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
