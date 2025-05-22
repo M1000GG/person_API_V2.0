@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from typing import List, Optional
-from model.person import Person
+from model.person import Person, PersonCreate, PersonUpdate
+from model.location import Location
+from model.typedoc import Typedoc
 from service.person_service import PersonService
 from service.location_service import LocationService
 from service.typedoc_service import TypedocService
@@ -53,43 +55,83 @@ def get_typedoc_service_for_persons() -> TypedocService:
     return typedoc_service_instance
 
 
-def _validate_person_data(
-        person: Person,
+def _create_person_from_codes(
+        person_create: PersonCreate,
         location_service: LocationService,
         typedoc_service: TypedocService
-) -> None:
-    """
-    Shared validation for person data
-    Checks location and document type exist
-    """
-    # Check location exists
-    if not location_service.get_location_by_code(person.location.code):
-        raise HTTPException(404, f"Location {person.location.code} not found")
+) -> Person:
+    """Create Person object with auto-completed location and typedoc"""
+    # Get location by code
+    location = location_service.get_location_by_code(person_create.location_code)
+    if not location:
+        raise HTTPException(404, f"Location {person_create.location_code} not found")
 
-    # Check document type exists
-    if not typedoc_service.get_typedoc_by_code(person.typedoc.code):
-        raise HTTPException(404, f"Document type {person.typedoc.code} not found")
+    # Get typedoc by code
+    typedoc = typedoc_service.get_typedoc_by_code(person_create.typedoc_code)
+    if not typedoc:
+        raise HTTPException(404, f"Document type {person_create.typedoc_code} not found")
+
+    # Create complete Person object
+    return Person(
+        id=person_create.id,
+        name=person_create.name,
+        lastname=person_create.lastname,
+        age=person_create.age,
+        gender=person_create.gender,
+        location=location,
+        typedoc=typedoc
+    )
+
+
+def _create_person_from_update_codes(
+        person_id: str,
+        person_update: PersonUpdate,
+        location_service: LocationService,
+        typedoc_service: TypedocService
+) -> Person:
+    """Create Person object from PersonUpdate with auto-completed data"""
+    # Get location by code
+    location = location_service.get_location_by_code(person_update.location_code)
+    if not location:
+        raise HTTPException(404, f"Location {person_update.location_code} not found")
+
+    # Get typedoc by code
+    typedoc = typedoc_service.get_typedoc_by_code(person_update.typedoc_code)
+    if not typedoc:
+        raise HTTPException(404, f"Document type {person_update.typedoc_code} not found")
+
+    # Create complete Person object
+    return Person(
+        id=person_id,  # Keep original ID
+        name=person_update.name,
+        lastname=person_update.lastname,
+        age=person_update.age,
+        gender=person_update.gender,
+        location=location,
+        typedoc=typedoc
+    )
 
 
 @person_router.post("/", response_model=bool)
 def create_person(
-        person: Person,
+        person_create: PersonCreate,
         parent_id: Optional[str] = None,
         person_service: PersonService = Depends(get_person_service),
         location_service: LocationService = Depends(get_location_service_for_persons),
         typedoc_service: TypedocService = Depends(get_typedoc_service_for_persons)
 ) -> bool:
-    """Create a new person in the system"""
-    # Validate person data
-    _validate_person_data(person, location_service, typedoc_service)
+    """Create a new person in the system using codes for location and typedoc"""
+
+    # Check for duplicate ID
+    if person_service.get_person_by_id(person_create.id):
+        raise HTTPException(409, f"Person {person_create.id} already exists")
 
     # Check parent exists if provided
     if parent_id and not person_service.get_person_by_id(parent_id):
         raise HTTPException(404, f"Parent {parent_id} not found")
 
-    # Check for duplicate ID
-    if person_service.get_person_by_id(person.id):
-        raise HTTPException(409, f"Person {person.id} already exists")
+    # Create complete person object with auto-completed data
+    person = _create_person_from_codes(person_create, location_service, typedoc_service)
 
     # Create the person
     if not person_service.create_person(person, parent_id):
@@ -124,18 +166,18 @@ def get_person_by_id(
 @person_router.put("/{id}", response_model=bool)
 def update_person(
         id: str,
-        person: Person,
+        person_update: PersonUpdate,
         person_service: PersonService = Depends(get_person_service),
         location_service: LocationService = Depends(get_location_service_for_persons),
         typedoc_service: TypedocService = Depends(get_typedoc_service_for_persons)
 ) -> bool:
-    """Update an existing person"""
+    """Update an existing person (ID and parent cannot be changed)"""
     # Check person exists
     if not person_service.get_person_by_id(id):
         raise HTTPException(404, f"Person {id} not found")
 
-    # Validate new data
-    _validate_person_data(person, location_service, typedoc_service)
+    # Create complete person object with auto-completed data
+    person = _create_person_from_update_codes(id, person_update, location_service, typedoc_service)
 
     # Perform update
     if not person_service.update_person(id, person):
@@ -156,9 +198,39 @@ def delete_person(
 
     # Perform deletion
     if not person_service.delete_person(id):
-        raise HTTPException(400, f"Cannot delete person {id} (may be root with children)")
+        raise HTTPException(400, f"Cannot delete person {id}")
 
     return True
+
+
+@person_router.get("/{id}/parent", response_model=Optional[Person])
+def get_parent(
+        id: str,
+        person_service: PersonService = Depends(get_person_service)
+):
+    """Get direct parent of a person"""
+    if not person_service.get_person_by_id(id):
+        raise HTTPException(404, f"Person {id} not found")
+
+    parent = person_service.get_parent(id)
+    if not parent:
+        raise HTTPException(404, f"No parent found for person {id}")
+    return parent
+
+
+@person_router.get("/{id}/children", response_model=List[Person])
+def get_children(
+        id: str,
+        person_service: PersonService = Depends(get_person_service)
+):
+    """Get all children of a person"""
+    if not person_service.get_person_by_id(id):
+        raise HTTPException(404, f"Person {id} not found")
+
+    children = person_service.get_children(id)
+    if not children:
+        raise HTTPException(404, f"No children found for person {id}")
+    return children
 
 
 @person_router.get("/filter/with-adult-children", response_model=List[Person])
@@ -213,18 +285,3 @@ def get_persons_by_location(
         raise HTTPException(404, f"No persons found in location {location_code}")
 
     return persons
-
-
-@person_router.get("/{id}/parent", response_model=Optional[Person])
-def get_parent(
-    id: str,
-    person_service: PersonService = Depends(get_person_service)
-):
-    """Get direct parent of a person"""
-    parent = person_service.get_parent(id)
-    if not parent:
-        raise HTTPException(
-            status_code=404,
-            detail=f"No parent found for the person{id}"
-        )
-    return parent

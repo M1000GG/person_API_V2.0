@@ -309,7 +309,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": \"h4\",\r\n  \"name\": \"Jorge\",\r\n  \"lastname\": \"Gutiérrez\",\r\n  \"age\": 22,\r\n  \"gender\": \"F\",\r\n  \"typedoc\": {\r\n    \"code\": 1,\r\n    \"description\": \"Cédula de Ciudadanía\"\r\n  },\r\n  \"location\": {\r\n    \"code\": 17001,\r\n    \"description\": \"MANIZALES\"\r\n  }\r\n}",
+							"raw": "{\r\n  \"id\": \"string\",\r\n  \"name\": \"string\",\r\n  \"lastname\": \"string\",\r\n  \"age\": 0,\r\n  \"gender\": \"string\",\r\n  \"typedoc_code\": 0,\r\n  \"location_code\": 0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -351,7 +351,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": \"h4\",\r\n  \"name\": \"Jorge\",\r\n  \"lastname\": \"Gutiérrez\",\r\n  \"age\": 22,\r\n  \"gender\": \"F\",\r\n  \"typedoc\": {\r\n    \"code\": 1,\r\n    \"description\": \"Cédula de Ciudadanía\"\r\n  },\r\n  \"location\": {\r\n    \"code\": 17001,\r\n    \"description\": \"MANIZALES\"\r\n  }\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -359,7 +359,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/persons/h3",
+							"raw": "http://127.0.0.1:8000/persons/H5",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -370,7 +370,7 @@
 							"port": "8000",
 							"path": [
 								"persons",
-								"h3"
+								"H5"
 							]
 						}
 					},
@@ -390,7 +390,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"h3\",\r\n    \"name\": \"Marleny\",\r\n    \"lastname\": \"Delgado\",\r\n    \"age\": 22,\r\n    \"gender\": \"F\",\r\n    \"typedoc\": {\r\n        \"code\": 1,\r\n        \"description\": \"Cédula de Ciudadanía\"\r\n    },\r\n    \"location\": {\r\n        \"code\": 17001,\r\n        \"description\": \"MANIZALES\"\r\n    }\r\n}",
+							"raw": "{\r\n  \"name\": \"Daniela\",\r\n  \"lastname\": \"Delgado\",\r\n  \"age\": 22,\r\n  \"gender\": \"F\",\r\n  \"typedoc_code\": 1,\r\n  \"location_code\": 5001\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -398,7 +398,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/persons/h3",
+							"raw": "http://127.0.0.1:8000/persons/H5",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -409,7 +409,7 @@
 							"port": "8000",
 							"path": [
 								"persons",
-								"h3"
+								"H5"
 							]
 						}
 					},
@@ -437,7 +437,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/persons/h3",
+							"raw": "http://127.0.0.1:8000/persons/H2",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -448,7 +448,7 @@
 							"port": "8000",
 							"path": [
 								"persons",
-								"h3"
+								"H2"
 							]
 						}
 					},
@@ -498,6 +498,128 @@
 					"response": []
 				},
 				{
+					"name": "Get Parent by children",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "parent_id",
+								"value": "p1",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/persons/H3/parent",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"persons",
+								"H3",
+								"parent"
+							],
+							"query": [
+								{
+									"key": "location_code",
+									"value": "17001",
+									"disabled": true
+								},
+								{
+									"key": "typedoc_code",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "gender",
+									"value": "F",
+									"disabled": true
+								}
+							]
+						},
+						"description": "## GET /persons/h2/parent\n\nThis endpoint retrieves information about a parent person with the specified ID.\n\n### Request\n\nThe request should be made to the following URL using the HTTP GET method:\n\n```\nhttp://127.0.0.1:8000/persons/h2/parent\n\n ```\n\n#### Request Body\n\n- The request does not require a request body.\n    \n\n### Response\n\n#### Response Body (JSON Schema)\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"id\": {\"type\": \"string\"},\n        \"name\": {\"type\": \"string\"},\n        \"lastname\": {\"type\": \"string\"},\n        \"age\": {\"type\": \"number\"},\n        \"gender\": {\"type\": \"string\"},\n        \"typedoc\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"code\": {\"type\": \"number\"},\n                \"description\": {\"type\": \"string\"}\n            }\n        },\n        \"location\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"code\": {\"type\": \"number\"},\n                \"description\": {\"type\": \"string\"}\n            }\n        }\n    }\n}\n\n ```\n\n- The response will be in JSON format with the properties `id`, `name`, `lastname`, `age`, `gender`, `typedoc`, and `location`.\n    \n- The `typedoc` and `location` properties are objects with `code` and `description` as their sub-properties."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All children of a person",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "parent_id",
+								"value": "p1",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/persons/P1/children",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"persons",
+								"P1",
+								"children"
+							],
+							"query": [
+								{
+									"key": "location_code",
+									"value": "17001",
+									"disabled": true
+								},
+								{
+									"key": "typedoc_code",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "gender",
+									"value": "F",
+									"disabled": true
+								}
+							]
+						},
+						"description": "## GET /persons/h2/parent\n\nThis endpoint retrieves information about a parent person with the specified ID.\n\n### Request\n\nThe request should be made to the following URL using the HTTP GET method:\n\n```\nhttp://127.0.0.1:8000/persons/h2/parent\n\n ```\n\n#### Request Body\n\n- The request does not require a request body.\n    \n\n### Response\n\n#### Response Body (JSON Schema)\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"id\": {\"type\": \"string\"},\n        \"name\": {\"type\": \"string\"},\n        \"lastname\": {\"type\": \"string\"},\n        \"age\": {\"type\": \"number\"},\n        \"gender\": {\"type\": \"string\"},\n        \"typedoc\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"code\": {\"type\": \"number\"},\n                \"description\": {\"type\": \"string\"}\n            }\n        },\n        \"location\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"code\": {\"type\": \"number\"},\n                \"description\": {\"type\": \"string\"}\n            }\n        }\n    }\n}\n\n ```\n\n- The response will be in JSON format with the properties `id`, `name`, `lastname`, `age`, `gender`, `typedoc`, and `location`.\n    \n- The `typedoc` and `location` properties are objects with `code` and `description` as their sub-properties."
+					},
+					"response": []
+				},
+				{
 					"name": "Get Persons by Criteria",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -514,7 +636,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"h3\",\r\n    \"name\": \"Marleny\",\r\n    \"lastname\": \"Delgado\",\r\n    \"age\": 22,\r\n    \"gender\": \"F\",\r\n    \"typedoc\": {\r\n        \"code\": 1,\r\n        \"description\": \"Cédula de Ciudadanía\"\r\n    },\r\n    \"location\": {\r\n        \"code\": 17001,\r\n        \"description\": \"MANIZALES\"\r\n    }\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -522,7 +644,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/persons/filter/by-criteria?location_code=17001&typedoc_code=1&gender=F",
+							"raw": "http://127.0.0.1:8000/persons/filter/by-criteria?location_code=17001&typedoc_code=1&gender=M",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -547,7 +669,7 @@
 								},
 								{
 									"key": "gender",
-									"value": "F"
+									"value": "M"
 								}
 							]
 						}
@@ -555,7 +677,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Parent by children",
+					"name": "Get persons by location",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -571,7 +693,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"h3\",\r\n    \"name\": \"Marleny\",\r\n    \"lastname\": \"Delgado\",\r\n    \"age\": 22,\r\n    \"gender\": \"F\",\r\n    \"typedoc\": {\r\n        \"code\": 1,\r\n        \"description\": \"Cédula de Ciudadanía\"\r\n    },\r\n    \"location\": {\r\n        \"code\": 17001,\r\n        \"description\": \"MANIZALES\"\r\n    }\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -579,7 +701,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/persons/h2/parent",
+							"raw": "http://127.0.0.1:8000/persons/filter/by-location/5001",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -590,8 +712,9 @@
 							"port": "8000",
 							"path": [
 								"persons",
-								"h2",
-								"parent"
+								"filter",
+								"by-location",
+								"5001"
 							],
 							"query": [
 								{
@@ -606,7 +729,7 @@
 								},
 								{
 									"key": "gender",
-									"value": "F",
+									"value": "M",
 									"disabled": true
 								}
 							]

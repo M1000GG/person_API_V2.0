@@ -1,7 +1,6 @@
 from model.typedoc import Typedoc
 from typing import List, Dict, Optional
 
-
 class TypedocService:
     def __init__(self):
         # Initialize with Colombian identification document types

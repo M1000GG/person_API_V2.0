@@ -1,145 +1,152 @@
-from typing import List, Optional
+from typing import List, Optional, Dict
 from pydantic import BaseModel
 from model.person import Person
 
 
 class NodeN(BaseModel):
     person: Person
-    children: List["NodeN"] = []
-    parent: Optional["NodeN"] = None  # New parent reference
-
-    def add_child(self, child: "NodeN") -> None:
-        """Add child and set parent reference"""
-        self.children.append(child)
-        child.parent = self  # Set reverse relationship
-
-    def remove_child_by_id(self, id: str) -> bool:
-        """Remove child by ID and clean parent reference"""
-        for i, child in enumerate(self.children):
-            if child.person.id == id:
-                removed_child = self.children.pop(i)
-                removed_child.parent = None  # Clean reference
-                return True
-
-        # Search in grandchildren
-        for child in self.children:
-            if child.remove_child_by_id(id):
-                return True
-
-        return False
+    parent: Optional["NodeN"] = None
 
 
 class TreeN(BaseModel):
-    root: NodeN
+    nodes: Dict[str, NodeN] = {}
+    root_id: Optional[str] = None
 
     def create_person(self, person: Person, parent_id: Optional[str] = None) -> bool:
         """Create new person in the tree"""
+        if person.id in self.nodes:
+            return False  # Person already exists
+
         new_node = NodeN(person=person)
 
-        if parent_id is None:
-            self.root.add_child(new_node)
-            return True
+        # If no root exists, this becomes the root
+        if self.root_id is None:
+            self.root_id = person.id
+            new_node.parent = None
+        elif parent_id is None:
+            # If no parent specified but root exists, make root the parent
+            if self.root_id in self.nodes:
+                new_node.parent = self.nodes[self.root_id]
+        else:
+            # Set specified parent
+            if parent_id not in self.nodes:
+                return False  # Parent doesn't exist
+            new_node.parent = self.nodes[parent_id]
 
-        # Find parent and add child
-        parent_node = self._find_node(self.root, parent_id)
-        if parent_node:
-            parent_node.add_child(new_node)
-            return True
-        return False
-
-    def _find_node(self, node: NodeN, id: str) -> Optional[NodeN]:
-        """Find node by ID in the tree"""
-        if node.person.id == id:
-            return node
-
-        for child in node.children:
-            found = self._find_node(child, id)
-            if found:
-                return found
-        return None
+        self.nodes[person.id] = new_node
+        return True
 
     def get_persons(self) -> List[Person]:
         """Get all persons in the tree"""
-        result = []
-        self._traverse(self.root, result)
-        return result
+        return [node.person for node in self.nodes.values()]
 
-    def _traverse(self, node: NodeN, result: List[Person]) -> None:
-        """Traverse tree and collect persons"""
-        result.append(node.person)
-        for child in node.children:
-            self._traverse(child, result)
+    def get_person_by_id(self, person_id: str) -> Optional[Person]:
+        """Get person by ID"""
+        node = self.nodes.get(person_id)
+        return node.person if node else None
+
+    def get_parent(self, person_id: str) -> Optional[Person]:
+        """Get parent of a person"""
+        node = self.nodes.get(person_id)
+        if node and node.parent:
+            return node.parent.person
+        return None
+
+    def get_children(self, person_id: str) -> List[Person]:
+        """Get all children of a person"""
+        children = []
+        for node in self.nodes.values():
+            if node.parent and node.parent.person.id == person_id:
+                children.append(node.person)
+        return children
 
     def update_person(self, id: str, person: Person) -> bool:
-        """Update person information"""
-        node = self._find_node(self.root, id)
-        if node:
-            node.person = person
-            return True
-        return False
-
-    def delete_person(self, id: str) -> bool:
-        """Delete person from the tree"""
-        if self.root.person.id == id:
-            if not self.root.children:
-                self.root = None
-                return True
+        """Update person information (excluding ID and parent)"""
+        if id not in self.nodes:
             return False
 
-        node = self._find_node(self.root, id)
-        if node and node.parent:
-            return node.parent.remove_child_by_id(id)
-        return False
+        # Keep the same parent and ID
+        node = self.nodes[id]
+        updated_person = Person(
+            id=id,  # Keep original ID
+            name=person.name,
+            lastname=person.lastname,
+            age=person.age,
+            gender=person.gender,
+            typedoc=person.typedoc,
+            location=person.location
+        )
+        node.person = updated_person
+        return True
+
+    def delete_person(self, id: str) -> bool:
+        """Delete person from the tree with proper orphan handling"""
+        if id not in self.nodes:
+            return False
+
+        node_to_delete = self.nodes[id]
+        children = self.get_children(id)
+
+        # If deleting root
+        if self.root_id == id:
+            if not children:
+                # No children, just remove root
+                del self.nodes[id]
+                self.root_id = None
+                return True
+            else:
+                # Find oldest child to become new root
+                oldest_child = max(children, key=lambda p: p.age)
+                self.root_id = oldest_child.id
+                self.nodes[oldest_child.id].parent = None
+
+                # Reassign other children to new root
+                for child in children:
+                    if child.id != oldest_child.id:
+                        self.nodes[child.id].parent = self.nodes[oldest_child.id]
+        else:
+            # Not root - reassign children to deleted node's parent
+            deleted_parent = node_to_delete.parent
+            for child in children:
+                self.nodes[child.id].parent = deleted_parent
+
+        # Remove the node
+        del self.nodes[id]
+        return True
 
     def get_persons_with_adult_child(self) -> List[Person]:
+        """Get persons who have at least one adult child (18+)"""
         result = []
-        self._find_persons_with_adult_child(self.root, result)
+        for person_id in self.nodes:
+            children = self.get_children(person_id)
+            if any(child.age >= 18 for child in children):
+                result.append(self.nodes[person_id].person)
         return result
-
-    def _find_persons_with_adult_child(self, node: NodeN, result: List[Person]) -> None:
-        has_adult_child = any(child.person.age >= 18 for child in node.children)
-
-        for child in node.children:
-            self._find_persons_with_adult_child(child, result)
-
-        if has_adult_child:
-            result.append(node.person)
 
     def filter_persons(self, location_code: Optional[str] = None,
                        typedoc_code: Optional[str] = None,
                        gender: Optional[str] = None) -> List[Person]:
+        """Filter persons by criteria"""
         result = []
-        self._filter_recursive(self.root, location_code, typedoc_code, gender, result)
+        for node in self.nodes.values():
+            matches = True
+
+            if location_code is not None and str(node.person.location.code) != location_code:
+                matches = False
+            if typedoc_code is not None and str(node.person.typedoc.code) != typedoc_code:
+                matches = False
+            if gender is not None and node.person.gender != gender:
+                matches = False
+
+            if matches:
+                result.append(node.person)
+
         return result
-
-    def _filter_recursive(self, node: NodeN,
-                          location_code: Optional[str],
-                          typedoc_code: Optional[str],
-                          gender: Optional[str],
-                          result: List[Person]) -> None:
-        matches = True
-
-        if location_code is not None and str(node.person.location.code) != location_code:
-            matches = False
-        if typedoc_code is not None and str(node.person.typedoc.code) != typedoc_code:
-            matches = False
-        if gender is not None and node.person.gender != gender:
-            matches = False
-
-        if matches:
-            result.append(node.person)
-
-        for child in node.children:
-            self._filter_recursive(child, location_code, typedoc_code, gender, result)
 
     def get_persons_by_location(self, location_code: str) -> List[Person]:
+        """Get persons by location code"""
         result = []
-        self._get_by_location_recursively(self.root, location_code, result)
+        for node in self.nodes.values():
+            if str(node.person.location.code) == location_code:
+                result.append(node.person)
         return result
-
-    def _get_by_location_recursively(self, node: NodeN, location_code: str, result: List[Person]) -> None:
-        if str(node.person.location.code) == location_code:
-            result.append(node.person)
-
-        for child in node.children:
-            self._get_by_location_recursively(child, location_code, result)
